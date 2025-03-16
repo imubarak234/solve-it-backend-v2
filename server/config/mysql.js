@@ -1,5 +1,5 @@
 // import { logger } from '../utils/logger.js';
-// import { ENVIRONMENT } from './environment.js'
+const dotenv = require('dotenv');
 const mysql = require('mysql2');
 const mssql = require('mssql');
 
@@ -42,10 +42,10 @@ sqlPackage.mssqlQuery = async (query, values = []) => {
 }
 
 const pool = mysql.createPool({
-    host: 'localhost',      
-    user: 'root',          
-    password: 'Kmkw145I', 
-    database: 'solveit_db', 
+    host: process.env.DB_HOST,      
+    user: process.env.DB_USER,          
+    password: process.env.DB_PASSWORD, 
+    database: process.env.DB_DATABASE, 
     waitForConnections: true,
     connectionLimit: 10,    
     queueLimit: 0

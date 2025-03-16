@@ -46,7 +46,7 @@ userControllerClass.createUser = async (req, res) => {
 
     let code = Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
-    console.log(tempPass);
+    // console.log(tempPass);
     const newUser = {
       role_id,
       name,

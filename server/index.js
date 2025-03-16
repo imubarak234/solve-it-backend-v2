@@ -36,14 +36,15 @@ app.use(express.json());
 // APIs 
 // app.use('/admin', adminRoutes);
 // app.use('/app', appRoutes);
-app.use('/test', testRoutes);
-app.use('/auth', authRoutes);
-app.use('/student', studentRoutes);
-app.use('/user', userRoutes);
-app.use('/posts', postRoutes);
-app.use('/admin/category', adminCategoryRoutes);
-app.use('/admin/school', schoolRoutes);
-app.use('/admin/post', adminPostRoutes);
+app.use('/api/v1/test', testRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/student', studentRoutes);
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/posts', postRoutes);
+app.use('/api/v1/admin/category', adminCategoryRoutes);
+app.use('/api/v1/admin/school', schoolRoutes);
+app.use('/api/v1/admin/post', adminPostRoutes);
+
 
 
 

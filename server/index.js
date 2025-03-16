@@ -36,6 +36,12 @@ app.use(express.json());
 // APIs 
 // app.use('/admin', adminRoutes);
 // app.use('/app', appRoutes);
+
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+
+  
 app.use('/api/v1/test', testRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/student', studentRoutes);

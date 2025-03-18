@@ -33,7 +33,7 @@ authControllerClass.loginEmail = async (req, res) => {
         if(!userExist) {
             return res.status(404).json({
                 statusCode: 404,
-                statusMessage: "Invalid domain credentials exists"
+                statusMessage: "Invalid emailT credentials exists"
             });
         };
 
@@ -45,7 +45,7 @@ authControllerClass.loginEmail = async (req, res) => {
         };
 
         // The token is generated
-        const authToken = auth.generateToken({ user_id: userExist.user_id });
+        const authToken = auth.generateToken({ user_id: userExist.id });
 
         // let payload = JSON.stringify({})
 

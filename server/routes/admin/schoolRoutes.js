@@ -1,12 +1,14 @@
 const schoolController = require('../../controllers/admin/schoolController');
 const express = require('express');
+const auth = require('../../middlewares/jwt');
+const apiLimiter = require('../../middlewares/rateLimiter');
 
 const router = express.Router();
 
-router.post('/createSchool', schoolController.createSchool);
-router.post('/createDepartment', schoolController.createDepartment);
-router.post('/createLevel', schoolController.createLevel);
-router.post('/createFaculty', schoolController.createFaculty);
-router.post('/getSchoolElements', schoolController.getSchoolElements);
+router.post('/createSchool', apiLimiter, auth.verifyToken, schoolController.createSchool);
+router.post('/createDepartment', apiLimiter, auth.verifyToken, schoolController.createDepartment);
+router.post('/createLevel', apiLimiter, auth.verifyToken, schoolController.createLevel);
+router.post('/createFaculty', apiLimiter, auth.verifyToken, schoolController.createFaculty);
+router.post('/getSchoolElements', apiLimiter, auth.verifyToken, schoolController.getSchoolElements);
 
 module.exports = router;

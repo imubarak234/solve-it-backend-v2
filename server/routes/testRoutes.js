@@ -1,5 +1,7 @@
 const testController = require('../controllers/test');
 const express = require('express');
+const auth = require('../middlewares/jwt');
+const apiLimiter = require('../middlewares/rateLimiter');
 
 const router = express.Router();
 

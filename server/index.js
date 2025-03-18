@@ -1,16 +1,14 @@
-// import express from 'express';
-// import env from './server/env.js';
-// import adminRoutes from './server/routes/admin.js';
-// import appRoutes from './server/routes/app.js';
-// import { bulkToDB, getAllInstitution } from './server/controllers/request.js';
-
 const express = require("express"); 
 const env = require("./env.js");
 const adminRoutes = require("./routes/admin.js");
 const appRoutes = require("./routes/app.js");
-//const { bulkToDB, getAllInstitution } = require("./server/controllers/request.js");
+
 const nodeCron = require("node-cron");
 const funcObj = require('./utils/functions.js');
+
+/**
+ * Import Routes
+ */
 const testRoutes = require('./routes/testRoutes.js');
 const authRoutes = require("./routes/authRoutes.js");
 const studentRoutes = require("./routes/studentRoutes.js");
@@ -19,7 +17,10 @@ const postRoutes = require('./routes/postRoutes.js');
 const adminCategoryRoutes = require('./routes/admin/categoriesRoutes.js');
 const schoolRoutes = require('./routes/admin/schoolRoutes.js');
 const adminPostRoutes = require('./routes/admin/adminPostRoutes.js')
-// const 
+
+const auth = require('./middlewares/jwt.js');
+const rateLimit = require('express-rate-limit');
+
 
 // Initialize express
 const app = express();
@@ -32,6 +33,14 @@ app.use(express.urlencoded({
 
 // Parse application json
 app.use(express.json());
+app.disable('x-powered-by')
+
+
+// append request time to all request
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString()
+    next()
+})
 
 // APIs 
 // app.use('/admin', adminRoutes);

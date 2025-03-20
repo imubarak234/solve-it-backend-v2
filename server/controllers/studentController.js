@@ -8,6 +8,7 @@ const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 const crypto = require('crypto');
 
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -26,7 +27,7 @@ studentControllerClass.createStudent = async (req, res) => {
         });
     }
 
-    let { role_id, name, email, phone, dob, gender, school_id, interests, faculty_id, department_id, level_id, password } = value;
+    let { role_id, name, email, phone, dob, gender, school_id, interests, faculty_id, department_id, level_id, password, matric_number } = value;
 
     const studentData = await funcObj.getUserData("email", email, "students");
         
@@ -43,7 +44,7 @@ studentControllerClass.createStudent = async (req, res) => {
 
     let code = Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
-    console.log(tempPass);
+    const imagePath = req?.file?.path || "";
     const newStudent = {
       role_id,
       name,
@@ -59,7 +60,9 @@ studentControllerClass.createStudent = async (req, res) => {
       password: hashedPassword,
       code,
       level_id,
-      dfsdasdeder: "Much"
+      dfsdasdeder: "Much",
+      matric_number,
+      avatar: imagePath
     }
 
     // This db call is to the apps table creating the app with the provided details

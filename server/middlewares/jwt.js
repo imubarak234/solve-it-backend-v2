@@ -8,8 +8,6 @@ let auth = {};
 auth.verifyToken = async (req, res, next) => {
     //getting the authorization token and user email from request object
     const { authorization } = req.headers;
-
-    console.log("Working")
     
     //if token is not provided
     if (!authorization) {
@@ -26,7 +24,7 @@ auth.verifyToken = async (req, res, next) => {
         const userData = await funcObj.getUserData("id", user_id);
 
         
-        if(!userData || userData.del_status){
+        if(!userData || userData.deleted_at){
             return res.status(409).json({
                 status: 409,
                 message: `Authentication Failed`
@@ -72,8 +70,7 @@ auth.verifyTokenApp = async (req, res, next) => {
     try {
         //token decoder - using .env secret key to decode the token
         const decoded =  jwt.verify(authorization, env.jwt_secret);
-        const app_id = decoded.username;
-        // console.log(decoded)
+        const app_id = decoded.user_id;
 
         const appData = await funcObj.getAppDetails(app_id);
         
@@ -110,9 +107,9 @@ auth.verifyTokenApp = async (req, res, next) => {
     }
 };
 
-auth.generateToken = ({ username }) => {
+auth.generateToken = ({ user_id }) => {
     const token = jwt.sign({
-        username
+        user_id
     },
     env.jwt_secret, { expiresIn: env.jwt_expiry });
     return token;

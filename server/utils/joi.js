@@ -209,7 +209,9 @@ joiObj.createStudentSchema = Joi.object({
         .required(),
     level_id: Joi.number()
         .required(),
-    password: Joi.string()
+    password: Joi.string(),
+    matric_number: Joi.string()
+        .required()
 });
 
 joiObj.updateInstitutionSchema = Joi.object({

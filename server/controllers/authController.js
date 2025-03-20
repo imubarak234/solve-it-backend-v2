@@ -29,11 +29,12 @@ authControllerClass.loginEmail = async (req, res) => {
 
         const userExist = await funcObj.getUserData("email", email);
 
-        // Necessary checks if the app id and password match
+        // console.log({ email, password });
+
         if(!userExist) {
             return res.status(404).json({
                 statusCode: 404,
-                statusMessage: "Invalid emailT credentials exists"
+                statusMessage: "Invalid email credentials user does not exist"
             });
         };
 
@@ -45,6 +46,7 @@ authControllerClass.loginEmail = async (req, res) => {
         };
 
         // The token is generated
+        
         const authToken = auth.generateToken({ user_id: userExist.id });
 
         // let payload = JSON.stringify({})
@@ -55,20 +57,6 @@ authControllerClass.loginEmail = async (req, res) => {
             token: authToken
         })
 
-        // // This bit of code updates the audit logs with details of the endpoint 
-        // db.pgQuery(`INSERT INTO portfolio_api.audit_logs ("user_id", "user_category", "action", "value") VALUES ($1, $2, $3, $4)`, [app_id, "App", "Login", payload])
-        // .then(result => {
-        //     return res.status(200).json({
-        //         statusCode: 200,
-        //         statusMessage: "Login successful",
-        //         token: authToken
-        //     })
-        // }).catch(err => {
-        //     return res.status(400).json({
-        //         statusCode: 400,
-        //         statusMessage: String(err)
-        //     })
-        // }) 
     }
     catch (err){
         return res.status(500).json({

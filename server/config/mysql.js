@@ -48,7 +48,7 @@ const pool = mysql.createPool({
     database: process.env.DB_DATABASE, 
     waitForConnections: true,
     connectionLimit: 10,    
-    queueLimit: 0
+    queueLimit: 3
 });
 
 // Get a promise-based interface for the pool
@@ -60,32 +60,16 @@ sqlPackage.dbQuery = promisePool;
 (async () => {
     try {
         const [rows] = await promisePool.query('SELECT 1 + 1 AS result');
-        console.log('Database connection successful. Result:', rows[0].result);
+        console.log('Database connection successful. Result:', rows[0]?.result);
     } catch (err) {
         console.error('Database connection failed:', err);
     }
 })();
 
-// sqlPackage.mysqlQuery = async () => {
-//     try {
-
-//         console.log("connecting")
-//         // Import the mysql2 package
-
-        
-
-//     }
-//     catch(err) {
-//         // logger.error({ message: err });
-//         console.error(err)
-//         throw err;
-//     }
-// }
 
 sqlPackage.fetchData = async (tableName, value = "", column = "", isWhere = false) => {
     try {
       const [rows] = isWhere ? await promisePool.query(`SELECT * FROM ${tableName} WHERE ${column} = ?`, value) :  await promisePool.query(`SELECT * FROM ${tableName}`);
-      // console.log('Data fetched:', rows);
       return rows;
     } catch (err) {
       console.error('Error fetching data:', err);
@@ -96,7 +80,6 @@ sqlPackage.fetchData = async (tableName, value = "", column = "", isWhere = fals
 sqlPackage.insertData = async (data, tableName) => {
     try {
         const [result] = await promisePool.query(`INSERT INTO ${tableName} SET ?`, data);
-        // console.log('Data inserted: ', result);
         return result;
     }
     catch (err) {

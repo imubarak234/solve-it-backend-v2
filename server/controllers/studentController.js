@@ -27,7 +27,10 @@ studentControllerClass.createStudent = async (req, res) => {
         });
     }
 
-    let { role_id, name, email, phone, dob, gender, school_id, interests, faculty_id, department_id, level_id, password, matric_number } = value;
+    let { role_id, name, email, phone, dob, gender, school_id, interests, faculty_id, department_id, level_id, password, matric_number, image } = value;
+
+    // funcObj.upload.single("image")
+    console.log(image)
 
     const studentData = await funcObj.getUserData("email", email, "students");
         
@@ -89,7 +92,7 @@ studentControllerClass.createStudent = async (req, res) => {
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };

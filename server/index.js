@@ -1,7 +1,8 @@
 const express = require("express"); 
 const env = require("./env.js");
-const adminRoutes = require("./routes/admin.js");
-const appRoutes = require("./routes/app.js");
+
+// Dependencies
+const path = require("path");
 
 const nodeCron = require("node-cron");
 const funcObj = require('./utils/functions.js');
@@ -42,6 +43,9 @@ app.use((req, res, next) => {
     next()
 })
 
+// Serve uploaded images statically
+app.use("/api/v1/uploads", express.static(path.join(__dirname, "../uploads")));
+
 // APIs 
 // app.use('/admin', adminRoutes);
 // app.use('/app', appRoutes);
@@ -59,6 +63,8 @@ app.use('/api/v1/posts', postRoutes);
 app.use('/api/v1/admin/category', adminCategoryRoutes);
 app.use('/api/v1/admin/school', schoolRoutes);
 app.use('/api/v1/admin/post', adminPostRoutes);
+
+
 
 
 

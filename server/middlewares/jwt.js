@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const env = require('../env');
 const funcObj = require('../utils/functions');
-const { use } = require('../routes/admin');
 
 let auth = {};
 
@@ -70,9 +69,9 @@ auth.verifyTokenApp = async (req, res, next) => {
     try {
         //token decoder - using .env secret key to decode the token
         const decoded =  jwt.verify(authorization, env.jwt_secret);
-        const app_id = decoded.user_id;
+        const user_id = decoded.user_id;
 
-        const appData = await funcObj.getAppDetails(app_id);
+        const appData = await funcObj.getAppDetails(user_id);
         
         if(!appData || appData.del_status){
             return res.status(409).json({

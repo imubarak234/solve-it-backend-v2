@@ -17,7 +17,8 @@ const userRoutes = require("./routes/userRoutes.js");
 const postRoutes = require('./routes/postRoutes.js');
 const adminCategoryRoutes = require('./routes/admin/categoriesRoutes.js');
 const schoolRoutes = require('./routes/admin/schoolRoutes.js');
-const adminPostRoutes = require('./routes/admin/adminPostRoutes.js')
+const adminPostRoutes = require('./routes/admin/adminPostRoutes.js');
+const roleRoutes = require('./routes/admin/roleRoutes.js');
 
 const auth = require('./middlewares/jwt.js');
 const rateLimit = require('express-rate-limit');
@@ -63,6 +64,7 @@ app.use('/api/v1/posts', postRoutes);
 app.use('/api/v1/admin/category', adminCategoryRoutes);
 app.use('/api/v1/admin/school', schoolRoutes);
 app.use('/api/v1/admin/post', adminPostRoutes);
+app.use('/api/v1/admin/roles', roleRoutes);
 
 
 

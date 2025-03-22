@@ -297,57 +297,6 @@ funcObj.comparePassword = (hashpass, password) => {
     return Boolean(funcObj.hashPassword(password) === hashpass)
 }
 
-funcObj.getRecords = () => {
-    return new Promise(async (resolve, reject) => {
-        await mssql.msQuery('SELECT * FROM production.eCCI_sample_data')
-        .then(result => {
-            console.log("Records Pull Successful " + moment().format("YYYY-MM-DD HH:mm:ss"))
-            resolve(result);
-        }).catch(err => {
-            console.log(String(err))
-            reject(err);
-        });
-    });
-};
-
-
-
-funcObj.bulkToDB = (list) => {
-    return new Promise(async (resolve, reject) => {
-        await db.pgQuery("TRUNCATE TABLE portfolio_api.request_data RESTART IDENTITY")
-        .then(result => {
-            console.log("DB has been flushed " + moment().format("YYYY-MM-DD HH:mm:ss"))
-        }) .catch (err => {
-            console.log(String(err) + " " + moment().format("YYYY-MM-DD HH:mm:ss"))
-        })
-        let queries = [];
-
-        if(list?.length > 0){
-            for (let i = 0; i < list.length; i++){
-                queries.push([list[i]["CCINumber"], list[i]["Purpose"], list[i]["CapitalType"], list[i]["CurrencyUSDEquivalent"], list[i]["NGNAmount"], list[i]["LoanBalance"], list[i]["InflowDate"], list[i]["TypeName"], list[i]["ClientName"], list[i]["Address"], list[i]["BeneficiaryCode"], list[i]["SectorName"], list[i]["StateName"], list[i]["InstCode"]])
-            }
-        };
-
-        // console.log(queries);
-        const queriesJoined = format('INSERT INTO portfolio_api.request_data ("CCINumber", "Purpose", "CapitalType", "CurrencyUSDEquivalent", "NGNAmount", "LoanBalance", "InflowDate", "TypeName", "ClientName", "Address", "BeneficiaryCode", "SectorName", "StateName", "InstCode") VALUES %L', queries);
-
-        if(queries.length > 0){
-            await db.pgQuery(queriesJoined)
-            .then(result => {
-                console.log("Bulk Upload to db Successful " + moment().format("YYYY-MM-DD HH:mm:ss"))
-                resolve("successful")
-            }).catch(err => {
-                console.log(String(err) + " " + moment().format("YYYY-MM-DD HH:mm:ss"))
-                reject(err)
-            })
-        }
-        else {
-            reject("No entries submitted")
-        }
-    });
-};
-
-// Function that validates the passwords according to CBN standards
 funcObj.passwordValidation = (str) => {
 
     let isEightCharacters = str.length >= 8 ? true : false;

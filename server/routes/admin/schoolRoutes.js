@@ -9,6 +9,6 @@ router.post('/createSchool', apiLimiter, auth.verifyToken, schoolController.crea
 router.post('/createDepartment', apiLimiter, auth.verifyToken, schoolController.createDepartment);
 router.post('/createLevel', apiLimiter, auth.verifyToken, schoolController.createLevel);
 router.post('/createFaculty', apiLimiter, auth.verifyToken, schoolController.createFaculty);
-router.post('/getSchoolElements', apiLimiter, auth.verifyToken, schoolController.getSchoolElements);
+router.post('/getSchoolElements', apiLimiter, schoolController.getSchoolElements);
 
 module.exports = router;

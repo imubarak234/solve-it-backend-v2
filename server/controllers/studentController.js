@@ -97,4 +97,24 @@ studentControllerClass.createStudent = async (req, res) => {
   }
 };
 
+studentControllerClass.getStudents = async (req, res) => {
+
+  try {
+
+    const students = await sqlPackage.dbQuery.query(`SELECT * FROM students WHERE deleted_at IS NULL`);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Students retrieved successfully",
+      data: students
+    })
+  }
+  catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: "Internal Server Error"
+    })
+  }
+}
+
 module.exports = studentControllerClass;

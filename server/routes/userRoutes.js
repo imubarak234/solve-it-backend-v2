@@ -5,6 +5,6 @@ const apiLimiter = require('../middlewares/rateLimiter');
 
 const router = express.Router();
 
-router.post("/signUpUser", apiLimiter, auth.verifyToken, userControllerClass.createUser);
+router.post("/signUpUser", apiLimiter, userControllerClass.createUser);
 
 module.exports = router;

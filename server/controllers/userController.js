@@ -79,4 +79,53 @@ userControllerClass.createUser = async (req, res) => {
   }
 }; 
 
+userControllerClass.getUsers = async (req, res) => {
+
+  try {
+
+    const students = await sqlPackage.dbQuery.query(`SELECT * FROM users WHERE deleted_at IS NULL`);
+    
+    return res.status(200).json({
+      status: 200,
+      message: "Students retrieved successfully",
+      data: students
+    })
+  }
+  catch(err) {
+    return res.status(500).json({
+      status: 500,
+      message: "Internal Server Error"
+    })
+  }
+}
+
+userControllerClass.getUserProfile = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+
+    const user = await funcObj.getUserData("id", id);
+    
+    if(!user) {
+      return res.status(404).json({
+        status: 404,
+        message: "User not found"
+      })
+    }
+
+    return res.status(200).json({
+      status: 200,
+      message: "User retrieved successfully",
+      data: user
+    })
+  }
+  catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: "Internal Server Error"
+    })
+  }
+};
+
 module.exports = userControllerClass;

@@ -41,6 +41,30 @@ marketSchemaClass.createProductTagsSchema = Joi.object({
   code: Joi.string(),
 });
 
+marketSchemaClass.getMarketElements = Joi.object({
+  elementType: Joi.string()
+  .valid("Products", "Tags", "Comments", "Comment Replies", "Comment Reactions")
+  .required()
+  .messages({
+    'any.only': '{{#label}} must ne one of Products, Tags, Comments, Comment Replies or Comment Reactions',
+    'any.required': '{{#label}} is required'
+  })
+})
+
+marketSchemaClass.deleteMarketElement = Joi.object({
+  elementType: Joi.string()
+  .valid("Products", "Tags", "Comments", "Comment Replies", "Comment Reactions")
+  .required()
+  .messages({
+    'any.only': '{{#label}} must ne one of Products, Tags, Comments, Comment Replies or Comment Reactions',
+    'any.required': '{{#label}} is required'
+  }),
+  elementId: Joi.number()
+    .required()
+})
+
+
+
 marketSchemaClass.createProductCommentsSchema = Joi.object({
   school_id: Joi.number()
     .required(),
@@ -83,3 +107,5 @@ marketSchemaClass.createProductCommentReactionsSchema = Joi.object({
     .required(),
   code: Joi.string()
 });
+
+module.exports = marketSchemaClass;

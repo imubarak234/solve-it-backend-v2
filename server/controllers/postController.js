@@ -361,8 +361,8 @@ postControllerClass.deletePostElement = async (req, res) => {
             message: `Post Element with ID: ${element_id} does not exist`
         });
     }
-
-    const queryResponse = await sqlPackage.dbQuery.query(`UPDATE ${tableName} SET deleted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' WHERE id = ${element_id}`);
+    
+    await sqlPackage.dbQuery.query(`UPDATE ${tableName} SET deleted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' WHERE id = ${element_id}`);
 
     return res.status(200).json({
       status: 200,

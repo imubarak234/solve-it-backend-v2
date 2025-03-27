@@ -9,8 +9,8 @@ const router = express.Router();
 
 
 router.post('/signUpStudent', apiLimiter, funcObj.upload.single("image"), studentControllerClass.createStudent);
-router.post('/getAllStudents', apiLimiter, auth.verifyToken, studentControllerClass.getStudents);
-router.post('/getStudentProfile', apiLimiter, auth.verifyToken, studentControllerClass.getStudentProfile);
+router.get('/getAllStudents', apiLimiter, studentControllerClass.getStudents);
+router.get('/getStudentProfile/:id', apiLimiter, studentControllerClass.getStudentProfile);
 
 module.exports = router;
 

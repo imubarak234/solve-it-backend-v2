@@ -5,6 +5,6 @@ const apiLimiter = require('../../middlewares/rateLimiter');
 
 const router = express.Router();
 
-router.post('/createPostCategory', apiLimiter, auth.verifyToken, categoriesController.addCategory);
+router.post('/createPostCategory', apiLimiter, categoriesController.addCategory);
 
 module.exports = router;

@@ -173,6 +173,13 @@ joiObj.createNewsCommentSchema = Joi.object({
 joiObj.getPostElementsSchema = Joi.object({
     postElement: Joi.string()
         .required(),
+        postElement: Joi.string()
+      .valid("Posts", "Post Comments", "Comment Replies", "Post Reactions", "Post Categories")
+      .required()
+      .messages({
+        'any.only': '{{#label}} must ne one of Posts, Post Comments, Comment Replies, Post Reactions or Post Categories',
+        'any.required': '{{#label}} is required'
+      }),
     searchCriteria: Joi.string()
         .required(),
     searchValue: Joi.string()
@@ -182,6 +189,13 @@ joiObj.getPostElementsSchema = Joi.object({
 joiObj.deletePostElementSchema = Joi.object({
     postElement: Joi.string()
         .required(),
+        postElement: Joi.string()
+      .valid("Posts", "Post Comments", "Comment Replies", "Post Reactions", "Post Categories")
+      .required()
+      .messages({
+        'any.only': '{{#label}} must ne one of Posts, Post Comments, Comment Replies, Post Reactions or Post Categories',
+        'any.required': '{{#label}} is required'
+      }),
     element_id: Joi.number()
         .required(),
 });

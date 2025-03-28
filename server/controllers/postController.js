@@ -194,15 +194,6 @@ postControllerClass.createPostComments = async (req, res) => {
 
     code = Boolean(code) ? code : Math.random().toString(36).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
-    const postComment = await funcObj.getUserData("code", code, "news_comment_replies");
-        
-    if(postComment) {
-        return res.status(409).json({
-            status: 409,
-            message: `news comment reply with Code: ${code} exists`
-        });
-    }
-
     const newPostComment = {
       school_id,
       news_id,
@@ -346,11 +337,11 @@ postControllerClass.deletePostElement = async (req, res) => {
 
     let tableName = ""
 
-    if(postElement.toLowerCase() == "posts"){ tableName = "news" }
-    else if(postElement.toLowerCase() == "post comments") { tableName = "news_comments" }
-    else if(postElement.toLowerCase() == "comment replies") { tableName = "news_comment_replies" }
-    else if(postElement.toLowerCase() == "post reactions") { tableName = "news_reactions" }
-    else if(postElement.toLowerCase() == "post categories") { tableName = "news_categories" }
+    if(postElement.toLowerCase() == "Posts"){ tableName = "news" }
+    else if(postElement.toLowerCase() == "Post Comments") { tableName = "news_comments" }
+    else if(postElement.toLowerCase() == "Comment Replies") { tableName = "news_comment_replies" }
+    else if(postElement.toLowerCase() == "Post Reactions") { tableName = "news_reactions" }
+    else if(postElement.toLowerCase() == "Post Categories") { tableName = "news_categories" }
     else { tableName = "news" }
 
     const postElementExists = await funcObj.getUserData("id", element_id, tableName);

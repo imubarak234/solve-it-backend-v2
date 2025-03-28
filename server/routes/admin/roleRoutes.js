@@ -5,10 +5,10 @@ const apiLimiter = require('../../middlewares/rateLimiter');
 
 const router = express.Router();
 
-router.post('/createRole', apiLimiter, auth.verifyToken, roleController.createRole);
-router.post('/updateRole', apiLimiter, auth.verifyToken, roleController.updateRole);
-router.post('/createPermission', apiLimiter, auth.verifyToken, roleController.createPermission);
-router.post('/updatePermission', apiLimiter, auth.verifyToken, roleController.updatePermission);
+router.post('/createRole', apiLimiter, roleController.createRole);
+router.post('/updateRole', apiLimiter, roleController.updateRole);
+router.post('/createPermission', apiLimiter, roleController.createPermission);
+router.post('/updatePermission', apiLimiter, roleController.updatePermission);
 router.get('/getRoles', apiLimiter, roleController.getRoles);
 router.get('/getPermissions', apiLimiter, roleController.getPermissions);
 

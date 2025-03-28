@@ -33,12 +33,38 @@ marketSchemaClass.createProductSchema = Joi.object({
   code: Joi.string(),
 });
 
+marketSchemaClass.updateProductSchema = Joi.object({
+  id: Joi.number()
+    .required(),
+  title: Joi.string()
+    .required(),
+  description: Joi.string()
+    .required(),
+  images: Joi.string()
+    .required(),
+  amount: Joi.string()
+    .required(),
+  cost: Joi.string()
+    .required(),
+  location: Joi.string()
+    .required(),
+  phone: Joi.string()
+    .required()
+})
+
 marketSchemaClass.createProductTagsSchema = Joi.object({
   school_id: Joi.number()
     .required(),
   name: Joi.string()
     .required(),
   code: Joi.string(),
+});
+
+marketSchemaClass.updateProductTagsSchema = Joi.object({
+  id: Joi.number()
+    .required(),
+  name: Joi.string()
+    .required()
 });
 
 marketSchemaClass.getMarketElements = Joi.object({
@@ -79,6 +105,20 @@ marketSchemaClass.createProductCommentsSchema = Joi.object({
   code: Joi.string(),
 });
 
+marketSchemaClass.updateProductCommentSchema = Joi.object({
+  id: Joi.number()
+    .required(),
+  body: Joi.string()
+    .required(),
+  commentType: Joi.string()
+  .valid("Comment", "Reply")
+  .required()
+  .messages({
+    'any.only': '{{#label}} must ne one of Comment, Reply',
+    'any.required': '{{#label}} is required'
+  }),
+})
+
 marketSchemaClass.createProductCommentReplySchema = Joi.object({
   school_id: Joi.number()
     .required(),
@@ -88,7 +128,8 @@ marketSchemaClass.createProductCommentReplySchema = Joi.object({
   staff_id: Joi.number(),
   lecturer_id: Joi.number(),
   user_id: Joi.number(),
-  body: Joi.string(),
+  body: Joi.string()
+    .required(),
   images: Joi.string(),
   code: Joi.string()
 });
@@ -96,7 +137,8 @@ marketSchemaClass.createProductCommentReplySchema = Joi.object({
 marketSchemaClass.createProductCommentReactionsSchema = Joi.object({
   school_id: Joi.number()
     .required(),
-  market_product_id: Joi.number(),
+  market_product_id: Joi.number()
+    .required(),
   market_product_comment_id: Joi.number(),
   market_product_comment_reply_id: Joi.number(),
   student_id: Joi.number(),
@@ -104,8 +146,25 @@ marketSchemaClass.createProductCommentReactionsSchema = Joi.object({
   lecturer_id: Joi.number(),
   user_id: Joi.number(),
   type: Joi.string()
-    .required(),
+    .valid("Like", "Dislike")
+    .required()
+    .messages({
+      'any.only': '{{#label}} must ne one of "Like", "Dislike"',
+      'any.required': '{{#label}} is required'
+    }),
   code: Joi.string()
+});
+
+marketSchemaClass.updateProductCommentReaction = Joi.object({
+  id: Joi.number()
+    .required(),
+  type: Joi.string()
+    .valid("Like", "Dislike")
+    .required()
+    .messages({
+      'any.only': '{{#label}} must ne one of "Like", "Dislike"',
+      'any.required': '{{#label}} is required'
+    }),
 });
 
 module.exports = marketSchemaClass;

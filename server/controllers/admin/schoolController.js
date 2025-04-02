@@ -53,7 +53,7 @@ schoolControllerClass.createSchool = async (req, res) => {
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     })
   }
@@ -93,14 +93,14 @@ schoolControllerClass.createFaculty = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newFaculty, "faculties");
     
-    return res.status(200).json({
-        statusCode: 200,
+    return res.status(201).json({
+        statusCode: 201,
         statusMessage: "Faculty created successfully",
     })
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     })
   }
@@ -142,15 +142,15 @@ schoolControllerClass.createDepartment = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newDepartment, "departments");
     
-    return res.status(200).json({
-        statusCode: 200,
+    return res.status(201).json({
+        statusCode: 201,
         statusMessage: "Department created successfully",
     });
 
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     })
   }
@@ -191,15 +191,15 @@ schoolControllerClass.createLevel = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newLevel, "levels");
     
-    return res.status(200).json({
-        statusCode: 200,
-        statusMessage: "Levels created successfully",
+    return res.status(201).json({
+        status: 201,
+        message: "Levels created successfully",
     });
 
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     })
   }
@@ -239,7 +239,7 @@ schoolControllerClass.getSchoolElements = async (req, res) => {
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal server Error",
+      message: String(err),
       status: 500
     });
   }

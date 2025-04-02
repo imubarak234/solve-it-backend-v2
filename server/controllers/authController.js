@@ -33,35 +33,35 @@ authControllerClass.loginEmail = async (req, res) => {
 
         if(!userExist) {
             return res.status(404).json({
-                statusCode: 404,
-                statusMessage: "Invalid email credentials user does not exist"
+                status: 404,
+                message: "Invalid email credentials user does not exist"
             });
         };
 
         if(!bcrypt.compareSync(password, userExist.password)){
             return res.status(404).json({
-                statusCode: 404,
-                statusMessage: "Invalid domain credentials password"
+                status: 404,
+                message: "Invalid domain credentials password"
             });
         };
 
         // The token is generated
-        
+
         const authToken = auth.generateToken({ user_id: userExist.id });
 
         // let payload = JSON.stringify({})
 
         return res.status(200).json({
-            statusCode: 200,
-            statusMessage: "Login successful",
+            status: 200,
+            message: "Login successful",
             token: authToken
         })
 
     }
     catch (err){
         return res.status(500).json({
-            statusCode: 500,
-            statusMessage: String(err)
+            status: 500,
+            message: String(err)
         })
     }
 };

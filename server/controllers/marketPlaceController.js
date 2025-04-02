@@ -69,14 +69,14 @@ marketPlaceControllerClass.createProduct = async (req, res) => {
 
     await sqlPackage.insertData(newProduct, "market_products");
     
-    return res.status(200).json({
-        status: 200,
+    return res.status(201).json({
+        status: 201,
         message: "Product created successfully",
     })
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     });
   }
@@ -145,7 +145,7 @@ marketPlaceControllerClass.getMarketElements = async (req, res) => {
     else if(elementType == "Comment Reactions") tableName = "market_product_comment_reactions"
     else tableName = "market_products"
 
-    const products = await sqlPackage.dbQuery.query(`SELECT * FROM ${tableName} WHERE deleted_at IS NULL`);
+    const [products] = await sqlPackage.dbQuery.query(`SELECT * FROM ${tableName} WHERE deleted_at IS NULL`);
     
     return res.status(200).json({
       status: 200,
@@ -155,7 +155,7 @@ marketPlaceControllerClass.getMarketElements = async (req, res) => {
   }
   catch(err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     });
   }
@@ -193,7 +193,7 @@ marketPlaceControllerClass.deleteProductElement = async (req, res) => {
   }
   catch(err){
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     })
   }
@@ -236,7 +236,7 @@ marketPlaceControllerClass.createProductTags = async (req, res) => {
   }
   catch (err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: String(err),
       status: 500
     })
   }

@@ -28,9 +28,7 @@ studentControllerClass.createStudent = async (req, res) => {
     }
 
     let { role_id, name, email, phone, dob, gender, school_id, interests, faculty_id, department_id, level_id, password, matric_number, image } = value;
-
-    // funcObj.upload.single("image")
-    console.log(image)
+    
 
     const studentData = await funcObj.getUserData("email", email, "students");
         
@@ -84,8 +82,8 @@ studentControllerClass.createStudent = async (req, res) => {
     //     ) 
     // });
 
-    return res.status(200).json({
-        status: 200,
+    return res.status(201).json({
+        status: 201,
         message: "Student created successfully",
     })
   }
@@ -101,7 +99,7 @@ studentControllerClass.getStudents = async (req, res) => {
 
   try {
 
-    const students = await sqlPackage.dbQuery.query(`SELECT * FROM students WHERE deleted_at IS NULL`);
+    const [students] = await sqlPackage.dbQuery.query(`SELECT * FROM students WHERE deleted_at IS NULL`);
 
     return res.status(200).json({
       status: 200,
@@ -112,7 +110,7 @@ studentControllerClass.getStudents = async (req, res) => {
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     })
   }
 }
@@ -141,7 +139,7 @@ studentControllerClass.getStudentProfile = async (req, res) => {
     catch (err) {
       return res.status(500).json({
         status: 500,
-        message: "Internal Server Error"
+        message: String(err)
       })
     }
 }

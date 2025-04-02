@@ -15,52 +15,13 @@ let adminPostClass = {};
 
 adminPostClass.createPost = async (req, res) => {
 
-  const { error, value } = joiObj.createNewsSchema.validate(req.body);
-          
-    if(error) {
-        return res.status(400).json({
-            status: 400,
-            message: error.details
-        });
-    }
-
-    let { school_id, news_category_id, title, excerpt, body, media, video, tags, faculties, departments, levels, code } = value;
-
-    code = Boolean(code) ? code : Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
-
-    const newsData = await funcObj.getUserData("code", code, "news");
-        
-    if(newsData) {
-        return res.status(409).json({
-            status: 409,
-            message: `news with Code: ${code} exists`
-        });
-    }
-
-
-    const newPost = {
-      school_id,
-      news_category_id,
-      title,
-      excerpt,
-      body,
-      media,
-      video,
-      tags,
-      faculties,
-      created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss'),
-      departments,
-      levels,
-      code
-    }
-
-
-    const insertRes = await sqlPackage.insertData(newPost, "news");
-
-    return res.status(200).json({
-        statusCode: 200,
-        statusMessage: "Post created successfully",
+  try {}
+  catch(err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
     })
+  }
 };
 
 adminPostClass.deletePost = async (req, res) => {
@@ -106,7 +67,7 @@ adminPostClass.deletePost = async (req, res) => {
     catch (err) {
       return res.status(500).json({
         status: 500,
-        message: "Internal Server Errors"
+        message: String(err)
       });
     }
 }
@@ -146,7 +107,7 @@ adminPostClass.updatePost = async (req, res) => {
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     })
   }
 }; 

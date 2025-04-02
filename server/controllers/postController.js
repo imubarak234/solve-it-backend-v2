@@ -60,15 +60,15 @@ postControllerClass.createPost = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newPost, "news");
 
-    return res.status(200).json({
-        statusCode: 200,
+    return res.status(201).json({
+        statusCode: 201,
         statusMessage: "Post created successfully",
     })
   }
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };
@@ -109,15 +109,15 @@ postControllerClass.createPostCategory = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newPostCategory, "news_categories");
 
-    return res.status(200).json({
-        statusCode: 200,
+    return res.status(201).json({
+        statusCode: 201,
         statusMessage: "Post created successfully",
     })
   }
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };
@@ -164,15 +164,15 @@ postControllerClass.createPostCommentReply = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newPostCommentReply, "news_comment_replies");
 
-    return res.status(200).json({
-        statusCode: 200,
+    return res.status(201).json({
+        statusCode: 201,
         statusMessage: "News Comment Reply created successfully",
     })
   }
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };
@@ -211,14 +211,14 @@ postControllerClass.createPostComments = async (req, res) => {
     const insertRes = await sqlPackage.insertData(newPostComment, "news_comment_replies");
 
     return res.status(200).json({
-        statusCode: 200,
-        statusMessage: "News Comment Reply created successfully",
+        status: 200,
+        message: "News Comment Reply created successfully",
     })
   }
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };
@@ -264,15 +264,15 @@ postControllerClass.createPostReaction = async (req, res) => {
 
     const insertRes = await sqlPackage.insertData(newPostReactions, "news_reactions");
 
-    return res.status(200).json({
-        statusCode: 200,
-        statusMessage: "Post reaction created successfully",
+    return res.status(201).json({
+        status: 201,
+        message: "Post reaction created successfully",
     })
   }
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };
@@ -315,7 +315,7 @@ postControllerClass.getPostElements = async (req, res) => {
   catch(err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     })
   }
 };
@@ -363,7 +363,7 @@ postControllerClass.deletePostElement = async (req, res) => {
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Errors"
+      message: String(err)
     });
   }
 };

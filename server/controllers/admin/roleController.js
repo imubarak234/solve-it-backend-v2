@@ -44,7 +44,7 @@ roleControllerClass.createRole = async (req, res) => {
   }
   catch(err) {
     return res.status(500).json({
-      message: "internal Server Error",
+      message: String(err),
       status: 500
     });
   }
@@ -159,7 +159,7 @@ roleControllerClass.createPermission = async (req, res) => {
   }
   catch(err) {
     return res.status(500).json({
-      message: "internal Server Error",
+      message: String(err),
       status: 500
     });
   }
@@ -169,7 +169,7 @@ roleControllerClass.getRoles = async (req, res) => {
 
   try {
 
-    const roles = await sqlPackage.dbQuery.query("SELECT * FROM roles");
+    const [roles] = await sqlPackage.dbQuery.query("SELECT * FROM roles");
     return res.status(200).json({
       status: 200,
       message: "Fetch successful",
@@ -188,7 +188,7 @@ roleControllerClass.getPermissions = async (req, res) => {
 
   try{
 
-    const permissions = await sqlPackage.dbQuery.query("SELECT * FROM permissions");
+    const [permissions] = await sqlPackage.dbQuery.query("SELECT * FROM permissions");
     return res.status(200).json({
       status: 200,
       message: "Fetch successful",

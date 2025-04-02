@@ -29,6 +29,8 @@ userControllerClass.createUser = async (req, res) => {
 
     let { role_id, name, email, phone, dob, gender, school_id, password } = value;
 
+
+
     const userExist = await funcObj.getUserData("email", email);
         
     if(userExist) {
@@ -74,7 +76,7 @@ userControllerClass.createUser = async (req, res) => {
   catch(err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Errors"
+      message: String(err)
     })
   }
 }; 
@@ -83,7 +85,7 @@ userControllerClass.getUsers = async (req, res) => {
 
   try {
 
-    const students = await sqlPackage.dbQuery.query(`SELECT * FROM users WHERE deleted_at IS NULL`);
+    const [students] = await sqlPackage.dbQuery.query(`SELECT * FROM users WHERE deleted_at IS NULL`);
     
     return res.status(200).json({
       status: 200,
@@ -94,7 +96,7 @@ userControllerClass.getUsers = async (req, res) => {
   catch(err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     })
   }
 }
@@ -123,7 +125,7 @@ userControllerClass.getUserProfile = async (req, res) => {
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     })
   }
 };

@@ -20,8 +20,8 @@ authControllerClass.loginEmail = async (req, res) => {
 
         if(error) {
             return res.status(400).json({
-                statusCode: 400,
-                statusMessage: error.details
+                status: 400,
+                code: error.details
             });
         }
 
@@ -54,7 +54,23 @@ authControllerClass.loginEmail = async (req, res) => {
         return res.status(200).json({
             status: 200,
             message: "Login successful",
-            token: authToken
+            token: authToken,
+            userData: {
+                id: userExist.id,
+                name: userExist.name,
+                email: userExist.email,
+                phone: userExist.phone,
+                dob: userExist.dob,
+                gender: userExist.gender,
+                school_id: userExist.school_id,
+                code: userExist.code,
+                role_id: userExist.role_id,
+                matric_number: userExist.matric_number,
+                faculty_id: userExist.faculty_id,
+                department_id: userExist.department_id,
+                level_id: userExist.level_id,
+                user_category: userExist.user_category,
+            }
         })
 
     }
@@ -75,8 +91,8 @@ authControllerClass.loginPhone = async (req, res) => {
 
     if(error) {
         return res.status(400).json({
-            statusCode: 400,
-            statusMessage: error.details
+            status: 400,
+            message: error.details
         });
     }
 
@@ -87,15 +103,15 @@ authControllerClass.loginPhone = async (req, res) => {
     // Necessary checks if the app id and password match
     if(!userExist) {
         return res.status(404).json({
-            statusCode: 404,
-            statusMessage: "Invalid domain credentials exists"
+            status: 404,
+            message: "Invalid domain credentials exists"
         });
     };
 
     if(!bcrypt.compareSync(password, userExist.password)){
         return res.status(404).json({
-            statusCode: 404,
-            statusMessage: "Invalid domain credentials password"
+            status: 404,
+            code: "Invalid domain credentials password"
         });
     };
 
@@ -105,9 +121,25 @@ authControllerClass.loginPhone = async (req, res) => {
     // let payload = JSON.stringify({})
 
     return res.status(200).json({
-        statusCode: 200,
-        statusMessage: "Login successful",
-        token: authToken
+        status: 200,
+        message: "Login successful",
+        token: authToken,
+        userData: {
+          id: userExist.id,
+          name: userExist.name,
+          email: userExist.email,
+          phone: userExist.phone,
+          dob: userExist.dob,
+          gender: userExist.gender,
+          school_id: userExist.school_id,
+          code: userExist.code,
+          role_id: userExist.role_id,
+          matric_number: userExist.matric_number,
+          faculty_id: userExist.faculty_id,
+          department_id: userExist.department_id,
+          level_id: userExist.level_id,
+          user_category: userExist.user_category,
+        }
     })
   }
   catch (err) {
@@ -211,7 +243,7 @@ authControllerClass.verifyEmail = async (req, res) => {
   catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err),
     })
   }
 };
@@ -246,9 +278,10 @@ authControllerClass.forgottenPassword = async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(tempPass, salt);
 
-    await sqlPackage.dbQuery.query(`UPDATE users SET password = ${hashedPassword} WHERE id = ${userExist?.id}`);
+    await sqlPackage.dbQuery.query(`UPDATE users SET password = '${hashedPassword}' WHERE id = ${userExist?.id}`);
+    // console.log(tempPass);
 
-    let emailStatus = await funcObj.sendEmail({ email: username, subject: 'Forget Password | Solve It App', 
+    let emailStatus = await funcObj.sendEmail({ email: userExist.email, subject: 'Forget Password | Solve It App', 
         message: funcObj.getTemplate(
             `Your Password has been reset successfully
                 <br />
@@ -269,7 +302,7 @@ authControllerClass.forgottenPassword = async (req, res) => {
   catch(err) {
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error"
+      message: String(err)
     });
   }
 };
@@ -332,7 +365,7 @@ authControllerClass.resetPassword = async(req, res) => {
   catch(err){
     return res.status(500).json({
       status: 500,
-      message: "Internal Server Error",
+      message: String(err)
     });
   }
 };

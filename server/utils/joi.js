@@ -117,6 +117,8 @@ joiObj.createNewsSchema = Joi.object({
     video: Joi.string(),
     tags: Joi.string(),
     code: Joi.string(),
+    departments: Joi.string(),
+    faculties: Joi.string(),
 });
 
 joiObj.createNewsReactionsSchema = Joi.object({

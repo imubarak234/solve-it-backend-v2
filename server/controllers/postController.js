@@ -27,7 +27,7 @@ postControllerClass.createPost = async (req, res) => {
         });
     }
 
-    let { school_id, news_category_id, title, excerpt, body, media, video, tags, faculties, departments, levels, code } = value;
+    let { school_id, news_category_id, title, excerpt, body, media, video, tags, faculties, departments, code, user_id } = value;
 
     code = Boolean(code) ? code : Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
@@ -53,8 +53,8 @@ postControllerClass.createPost = async (req, res) => {
       faculties,
       created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss'),
       departments,
-      levels,
-      code
+      code,
+      user_id
     }
 
 

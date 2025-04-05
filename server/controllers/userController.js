@@ -7,6 +7,7 @@ const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 const crypto = require('crypto');
+const userCategorySchema = require('../utils/schemas/userCategorySchema.js');
 
 
 let userControllerClass = {};
@@ -27,7 +28,7 @@ userControllerClass.createUser = async (req, res) => {
         });
     }
 
-    let { role_id, name, email, phone, dob, gender, school_id, password } = value;
+    let { role_id, name, email, phone, dob, gender, school_id, password, department_id, faculty_id, matric_number, level_id } = value;
 
 
 
@@ -49,6 +50,8 @@ userControllerClass.createUser = async (req, res) => {
     let code = Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
     // console.log(tempPass);
+    const imagePath = req?.file?.path || "";
+
     const newUser = {
       role_id,
       name,
@@ -60,6 +63,11 @@ userControllerClass.createUser = async (req, res) => {
       created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss'),
       password: hashedPassword,
       code,
+      department_id,
+      faculty_id,
+      level_id,
+      matric_number,
+      avatar: imagePath
     }
 
     // This db call is to the apps table creating the app with the provided details
@@ -129,5 +137,103 @@ userControllerClass.getUserProfile = async (req, res) => {
     })
   }
 };
+
+userControllerClass.createUserCategory = async (req, res) => {
+
+  try {
+
+    const { error, value } = userCategorySchema.createUserCategorySchema.validate(req.body);
+    
+    if(error) {
+        return res.status(400).json({
+            status: 400,
+            message: error.details
+        });
+    }
+
+    let { name, code } = value;
+
+    code = Boolean(code) ? code : Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
+
+    const newUserCategory = {
+      code,
+      name,
+      created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')
+    }
+
+    await sqlPackage.insertData(newUserCategory, "user_categories");
+        
+      return res.status(201).json({
+          status: 201,
+          message: "Product created successfully",
+      })
+
+  }
+  catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
+
+userControllerClass.getUserCategories = async (req, res) => {
+
+  try {
+
+    const [userCategories] = await sqlPackage.dbQuery.query(`SELECT * FROM user_categories WHERE deleted_at IS NULL`);
+    
+    return res.status(200).json({
+      status: 200,
+      message: "User Categories retrieved successfully",
+      data: userCategories
+    })
+  }
+  catch(err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
+
+userControllerClass.updateUserCategory = async (req, res) => {
+
+  try {
+
+    const { error, value } = userCategorySchema.updateUserCategorySchema.validate(req.body);
+    
+    if(error) {
+        return res.status(400).json({
+            status: 400,
+            message: error.details
+        });
+    }
+
+    let { name, id } = value;
+
+    const userCategory = await funcObj.getUserData("id", id, "user_categories");
+            
+    if(!userCategory) {
+        return res.status(409).json({
+            status: 409,
+            message: `User Category with ID: ${id} does not exist`
+        });
+    }
+
+    await sqlPackage.dbQuery.query(`UPDATE user_categories SET name = '${name}' WHERE id = ${id}`);
+
+    return res.status(200).json({
+        status: 200,
+        message: "User Category updated successfully",
+    })
+  }
+  catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
 
 module.exports = userControllerClass;

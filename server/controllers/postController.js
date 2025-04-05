@@ -134,7 +134,7 @@ postControllerClass.createPostCommentReply = async (req, res) => {
         });
     }
 
-    let { school_id, news_id, news_comment_id, student_id, staff_id, lecturer_id, user_id, body, images, code } = value;
+    let { school_id, news_id, news_comment_id, user_id, body, images, code } = value;
 
     code = Boolean(code) ? code : Math.random().toString(36).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
@@ -151,9 +151,6 @@ postControllerClass.createPostCommentReply = async (req, res) => {
       school_id,
       news_id,
       news_comment_id,
-      student_id,
-      staff_id,
-      lecturer_id,
       user_id,
       body,
       images,
@@ -190,16 +187,13 @@ postControllerClass.createPostComments = async (req, res) => {
         });
     }
 
-    let { school_id, news_id, student_id, staff_id, lecturer_id, user_id, body, images, code } = value;
+    let { school_id, news_id, user_id, body, images, code } = value;
 
     code = Boolean(code) ? code : Math.random().toString(36).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
     const newPostComment = {
       school_id,
       news_id,
-      student_id,
-      staff_id,
-      lecturer_id,
       user_id,
       body,
       images,
@@ -208,11 +202,11 @@ postControllerClass.createPostComments = async (req, res) => {
     }
 
 
-    const insertRes = await sqlPackage.insertData(newPostComment, "news_comment_replies");
+    const insertRes = await sqlPackage.insertData(newPostComment, "news_comments");
 
     return res.status(200).json({
         status: 200,
-        message: "News Comment Reply created successfully",
+        message: "News Comment created successfully",
     })
   }
   catch (err) {

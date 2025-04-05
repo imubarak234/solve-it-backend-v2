@@ -6,11 +6,7 @@ let marketSchemaClass = {};
 marketSchemaClass.createProductSchema = Joi.object({
   school_id: Joi.number()
     .required(),
-  market_product_tag_id: Joi.number()
-    .required(),
-  student_id: Joi.number(),
-  staff_id: Joi.number(),
-  lecturer_id: Joi.number(),
+  market_product_tag_id: Joi.number(),
   user_id: Joi.number(),
   title: Joi.string()
     .required(),
@@ -94,11 +90,10 @@ marketSchemaClass.deleteMarketElement = Joi.object({
 marketSchemaClass.createProductCommentsSchema = Joi.object({
   school_id: Joi.number()
     .required(),
-  market_product_id: Joi.number(),
-  student_id: Joi.number(),
-  staff_id: Joi.number(),
-  lecturer_id: Joi.number(),
-  user_id: Joi.number(),
+  market_product_id: Joi.number()
+    .required(),
+  user_id: Joi.number()
+     .required(),
   body: Joi.string()
     .required(),
   images: Joi.string(),
@@ -122,12 +117,12 @@ marketSchemaClass.updateProductCommentSchema = Joi.object({
 marketSchemaClass.createProductCommentReplySchema = Joi.object({
   school_id: Joi.number()
     .required(),
-  market_product_id: Joi.number(),
-  market_product_comment_id: Joi.number(),
-  student_id: Joi.number(),
-  staff_id: Joi.number(),
-  lecturer_id: Joi.number(),
-  user_id: Joi.number(),
+  market_product_id: Joi.number()
+    .required(),
+  market_product_comment_id: Joi.number()
+    .required(),
+  user_id: Joi.number()
+    .required(),
   body: Joi.string()
     .required(),
   images: Joi.string(),

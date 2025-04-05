@@ -95,6 +95,10 @@ joiObj.createUserSchema = Joi.object({
     school_id: Joi.number()
         .required(),
     password: Joi.string(),
+    faculty_id: Joi.number(),
+    department_id: Joi.number(),
+    level_id: Joi.number(),
+    matric_number: Joi.string()
 });
 
 ///////////////////////////   News Section ////////////////////////////////
@@ -107,12 +111,11 @@ joiObj.createNewsSchema = Joi.object({
     excerpt: Joi.string(),
     body: Joi.string()
         .required(),
+    user_id: Joi.number()
+        .required(),
     media: Joi.string(),
     video: Joi.string(),
     tags: Joi.string(),
-    faculties: Joi.string(),
-    departments: Joi.string(),
-    levels: Joi.string(),
     code: Joi.string(),
 });
 
@@ -121,12 +124,15 @@ joiObj.createNewsReactionsSchema = Joi.object({
         .required(),
     news_id: Joi.number()
         .required(),
-    student_id: Joi.number(),
-    staff_id: Joi.number(),
-    lecturer_id: Joi.number(),
-    user_id: Joi.number(),
-    type: Joi.string()
+    user_id: Joi.number()
         .required(),
+    type: Joi.string()
+        .valid("Like", "Dislike")
+        .required()
+        .messages({
+          'any.only': '{{#label}} must ne one of "Like", "Dislike"',
+          'any.required': '{{#label}} is required'
+        }),
     code: Joi.string(),
 });
 
@@ -145,10 +151,8 @@ joiObj.createNewsCommentReplySchema = Joi.object({
         .required(),
     news_comment_id: Joi.number()
         .required(),
-    student_id: Joi.number(),
-    staff_id: Joi.number(),
-    lecturer_id: Joi.number(),
-    user_id: Joi.number(),
+    user_id: Joi.number()
+        .required(),
     body: Joi.string()
         .required(),
     images: Joi.string(),
@@ -160,10 +164,8 @@ joiObj.createNewsCommentSchema = Joi.object({
         .required(),
     news_id: Joi.number()
         .required(),
-    student_id: Joi.number(),
-    staff_id: Joi.number(),
-    lecturer_id: Joi.number(),
-    user_id: Joi.number(),
+    user_id: Joi.number()
+        .required(),
     body: Joi.string()
         .required(),
     images: Joi.string(),
@@ -228,16 +230,6 @@ joiObj.createStudentSchema = Joi.object({
         .required()
 });
 
-joiObj.updateInstitutionSchema = Joi.object({
-    inst_code: Joi.string()
-        .length(5)
-        .required(),
-    inst_name: Joi.string(),
-    inst_email: Joi.string()
-        .email(),
-    inst_phone: Joi.string(),
-    new_inst_code: Joi.string()
-});
 
 joiObj.requestSchema = Joi.object({
     inst_code: Joi.string()
@@ -249,78 +241,5 @@ joiObj.requestSchema = Joi.object({
         .required(),
 });
 
-joiObj.appSchema = Joi.object({
-    inst_code: Joi.string()
-        .length(5)
-        .required(),
-    app_name: Joi.string()
-        .required(),
-    app_id: Joi.string()
-        .email()
-        .required()
-});
-
-// This schema is for validation the payload for updating the user/app information from admin routes
-joiObj.updateAppSchema = Joi.object({
-    inst_code: Joi.string()
-        .length(5),
-    app_name: Joi.string(),
-    app_id: Joi.string()
-        .email()
-        .required(),
-    new_app_id: Joi.string()
-        .email(),
-    api_key: Joi.string()
-});
-
-// This schema is for validating the payload for updating app/user information form app routes
-joiObj.updateAppUserSchema = Joi.object({
-    app_name: Joi.string(),
-    new_app_id: Joi.string()
-        .email(),
-    api_key: Joi.string()
-})
-
-joiObj.addAdminSchema = Joi.object({
-    username: Joi.string()
-        .email()
-        .required()
-})
-
-joiObj.resetAppSchema = Joi.object({
-    app_id: Joi.string()
-        .required()
-});
-
-joiObj.deleteAppSchema = Joi.object({
-    app_id: Joi.string()
-        .required(),
-    del_status: Joi.bool()
-        .required()
-})
-
-joiObj.deleteAdminSchema = Joi.object({
-    username: Joi.string()
-        .required()
-        .email(),
-    del_status: Joi.bool()
-        .required()
-})
-
-joiObj.deleteInstitutionSchema = Joi.object({
-    inst_code: Joi.string()
-        .required(),
-    del_status: Joi.bool()
-        .required()
-})
-
-joiObj.updateAdminSchema = Joi.object({
-    username: Joi.string()
-        .email()
-        .required(),
-    new_username: Joi.string()
-        .email()
-        .required()
-})
 
 module.exports = joiObj;

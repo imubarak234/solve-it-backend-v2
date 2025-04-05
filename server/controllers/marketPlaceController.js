@@ -29,9 +29,6 @@ marketPlaceControllerClass.createProduct = async (req, res) => {
     let { 
       school_id, 
       market_product_tag_id, 
-      student_id, 
-      staff_id, 
-      lecturer_id, 
       user_id,
       title,
       description,
@@ -50,9 +47,6 @@ marketPlaceControllerClass.createProduct = async (req, res) => {
     const newProduct = {
       school_id,
       market_product_tag_id,
-      student_id,
-      staff_id,
-      lecturer_id,
       user_id,
       title,
       description,
@@ -295,16 +289,13 @@ marketPlaceControllerClass.createProductComment = async (req, res) => {
         });
     }
 
-    let { school_id, market_product_id, student_id, staff_id, lecturer_id, user_id, body, images, code } = value;
+    let { school_id, market_product_id, user_id, body, images, code } = value;
 
     code = Boolean(code) ? code : Math.random().toString(36).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
     const newComment = {
       school_id,
       market_product_id,
-      student_id,
-      staff_id,
-      lecturer_id,
       user_id,
       body,
       images,

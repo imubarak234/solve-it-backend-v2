@@ -230,25 +230,13 @@ postControllerClass.createPostReaction = async (req, res) => {
         });
     }
 
-    let { school_id, news_id, student_id, staff_id, lecturer_id, user_id, type, code } = value;
+    let { school_id, news_id, user_id, type, code } = value;
 
     code = Boolean(code) ? code : Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
-
-    const postReactions = await funcObj.getUserData("code", code, "news_reactions");
-        
-    if(postReactions) {
-        return res.status(409).json({
-            status: 409,
-            message: `post reaction with Code: ${code} exists`
-        });
-    }
 
     const newPostReactions = {
       school_id,
       news_id,
-      student_id,
-      staff_id,
-      lecturer_id,
       user_id,
       type,
       created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss'),
@@ -270,6 +258,50 @@ postControllerClass.createPostReaction = async (req, res) => {
     });
   }
 };
+
+postControllerClass.createPostCommentReaction = async (req, res) => {
+
+  try {
+
+    const { error, value } = joiObj.createNewsCommentReactionsSchema.validate(req.body);
+        
+    if(error) {
+        return res.status(400).json({
+            status: 400,
+            message: error.details
+        });
+    }
+
+    let { school_id, news_id, news_comment_id, news_comment_reply_id, user_id, type, code } = value;
+
+    code = Boolean(code) ? code : Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
+
+    const newPostReactions = {
+      school_id,
+      news_id,
+      news_comment_id,
+      news_comment_reply_id,
+      user_id,
+      type,
+      created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss'),
+      code
+    }
+
+
+    const insertRes = await sqlPackage.insertData(newPostReactions, "news_comment_reactions");
+
+    return res.status(201).json({
+        status: 201,
+        message: "Post Comment reaction created successfully",
+    })
+  }
+  catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
 
 postControllerClass.getPostElements = async (req, res) => {
 

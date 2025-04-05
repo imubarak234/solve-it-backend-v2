@@ -82,10 +82,14 @@ MODIFY COLUMN news_comment_id BIGINT UNSIGNED NULL;
 ALTER TABLE news_comment_reactions 
 MODIFY COLUMN news_comment_reply_id BIGINT UNSIGNED NULL;
 
+ALTER TABLE news_comment_reactions 
+MODIFY COLUMN user_id BIGINT UNSIGNED NOT NULL;
+
 ALTER TABLE news_comment_reactions ADD CONSTRAINT fk_news_comment_reactions_schools FOREIGN KEY (school_id) REFERENCES schools(id);
 ALTER TABLE news_comment_reactions ADD CONSTRAINT fk_news_comment_reactions_news FOREIGN KEY (news_id) REFERENCES news(id);
 ALTER TABLE news_comment_reactions ADD CONSTRAINT fk_news_comment_reactions_news_comment FOREIGN KEY (news_comment_id) REFERENCES news_comments(id);
 ALTER TABLE news_comment_reactions ADD CONSTRAINT fk_news_comment_reactions_news_comment_reply FOREIGN KEY (news_comment_reply_id) REFERENCES news_comment_replies(id);
+ALTER TABLE news_comment_reactions ADD CONSTRAINT fk_news_comment_reactions_users FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 -- Changes to news_comments Replies table
@@ -207,6 +211,24 @@ ALTER TABLE market_product_comment_reactions ADD CONSTRAINT fk_market_product_co
 ALTER TABLE market_product_comment_reactions ADD CONSTRAINT fk_market_product_comment_reactions_market_product_comment FOREIGN KEY (market_product_comment_id) REFERENCES market_product_comments(id);
 ALTER TABLE market_product_comment_reactions ADD CONSTRAINT fk_market_product_comment_reactions_market_product_comment_reply FOREIGN KEY (market_product_comment_reply_id) REFERENCES market_product_comment_replies(id);
 ALTER TABLE market_product_comment_reactions ADD CONSTRAINT fk_market_product_comment_reactions_users FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+
+
+-- Changes to the news_reactions table
+
+ALTER TABLE news_reactions 
+MODIFY COLUMN school_id BIGINT UNSIGNED NOT NULL;
+
+ALTER TABLE news_reactions 
+MODIFY COLUMN news_id BIGINT UNSIGNED NOT NULL;
+
+ALTER TABLE news_reactions 
+MODIFY COLUMN user_id BIGINT UNSIGNED NULL;
+
+ALTER TABLE news_reactions ADD CONSTRAINT fk_news_reactions_schools FOREIGN KEY (school_id) REFERENCES schools(id);
+ALTER TABLE news_reactions ADD CONSTRAINT fk_news_reactions_news FOREIGN KEY (news_id) REFERENCES news(id);
+ALTER TABLE news_reactions ADD CONSTRAINT fk_news_reactions_users FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 

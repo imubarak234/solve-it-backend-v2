@@ -13,16 +13,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 let adminPostClass = {};
 
-adminPostClass.createPost = async (req, res) => {
-
-  try {}
-  catch(err) {
-    return res.status(500).json({
-      status: 500,
-      message: String(err)
-    })
-  }
-};
 
 adminPostClass.deletePost = async (req, res) => {
   

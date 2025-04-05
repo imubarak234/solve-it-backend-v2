@@ -27,15 +27,6 @@ categoriesControllerClass.addCategory = async (req, res) => {
 
     code = Boolean(code) ? code : Math.random().toString(36).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
-    const newsData = await funcObj.getUserData("code", code, "news_categories");
-        
-    if(newsData) {
-        return res.status(409).json({
-            status: 409,
-            message: `News category with Code: ${code} exists`
-        });
-    }
-
     const newPostCategory = {
       school_id,
       name,

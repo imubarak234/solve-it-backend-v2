@@ -138,6 +138,25 @@ joiObj.createNewsReactionsSchema = Joi.object({
     code: Joi.string(),
 });
 
+joiObj.createNewsCommentReactionsSchema = Joi.object({
+    school_id: Joi.number()
+        .required(),
+    news_id: Joi.number()
+        .required(),
+    user_id: Joi.number()
+        .required(),
+    type: Joi.string()
+        .valid("Like", "Dislike")
+        .required()
+        .messages({
+          'any.only': '{{#label}} must ne one of "Like", "Dislike"',
+          'any.required': '{{#label}} is required'
+        }),
+    code: Joi.string(),
+    news_comment_id: Joi.number(),
+    news_comment_reply_id: Joi.number(),
+})
+
 joiObj.createNewsCategoriesSchema = Joi.object({
     school_id: Joi.number()
         .required(),

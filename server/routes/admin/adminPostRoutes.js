@@ -5,7 +5,6 @@ const apiLimiter = require('../../middlewares/rateLimiter');
 
 const router = express.Router();
 
-router.post('/createPost', apiLimiter, adminPostsController.createPost);
 router.post('/deletePost', apiLimiter, adminPostsController.deletePost);
 router.put('/updatePost', apiLimiter, adminPostsController.updatePost);
 

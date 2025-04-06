@@ -11,6 +11,6 @@ router.get("/getAllUsers", apiLimiter, userControllerClass.getUsers);
 router.get("/getUserProfile/:id", apiLimiter, userControllerClass.getUserProfile);
 router.post("/createUserCategory", apiLimiter, userControllerClass.createUserCategory);
 router.get("/getUserCategories", apiLimiter, userControllerClass.getUserCategories);
-router.put("updateUserCategory", apiLimiter, userControllerClass.updateUserCategory);
+router.put("/updateUserCategory", apiLimiter, userControllerClass.updateUserCategory);
 
 module.exports = router;

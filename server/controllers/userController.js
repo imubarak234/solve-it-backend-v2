@@ -165,7 +165,7 @@ userControllerClass.createUserCategory = async (req, res) => {
         
       return res.status(201).json({
           status: 201,
-          message: "Product created successfully",
+          message: "Category created successfully",
       })
 
   }

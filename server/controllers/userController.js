@@ -74,7 +74,7 @@ userControllerClass.createUser = async (req, res) => {
     const result = await sqlPackage.insertData(newUser, "users")
     
     // This bit of the code sends a mail to the app being created with a default password
-    let emailStatus = await funcObj.SendGridEmail();  
+    // let emailStatus = await funcObj.SendGridEmail();  
 
     return res.status(200).json({
         statusCode: 200,

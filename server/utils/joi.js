@@ -45,7 +45,6 @@ joiObj.emailLoginSchema = Joi.object({
 
 joiObj.phoneLoginSchema = Joi.object({
     phone: Joi.string()
-        .length(11)
         .required(),
     password: Joi.string()
         .required()

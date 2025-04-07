@@ -231,10 +231,10 @@ ALTER TABLE news_reactions ADD CONSTRAINT fk_news_reactions_news FOREIGN KEY (ne
 ALTER TABLE news_reactions ADD CONSTRAINT fk_news_reactions_users FOREIGN KEY (user_id) REFERENCES users(id);
 
 
+-- Changes to the core services payments table
 
 
-
-
+ALTER TABLE core_service_payments ADD COLUMN status varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending';
 
 
 

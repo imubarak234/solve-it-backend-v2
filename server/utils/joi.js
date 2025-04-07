@@ -202,10 +202,6 @@ joiObj.getPostElementsSchema = Joi.object({
         'any.only': '{{#label}} must ne one of Posts, Post Comments, Comment Replies, Post Reactions or Post Categories',
         'any.required': '{{#label}} is required'
       }),
-    searchCriteria: Joi.string()
-        .required(),
-    searchValue: Joi.string()
-        .required()
 });
 
 joiObj.deletePostElementSchema = Joi.object({

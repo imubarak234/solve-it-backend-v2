@@ -326,14 +326,16 @@ postControllerClass.getPostElements = async (req, res) => {
     else if(postElement == "Post Reactions") { tableName = "news_reactions" }
     else if(postElement == "Post Categories") { tableName = "news_categories" }
     else { tableName = "news" }
-    console.log(postElement, searchCriteria, searchValue)
+    // console.log(postElement, searchCriteria, searchValue)
 
-    const queryResponse = await sqlPackage.fetchData(tableName, searchValue, searchCriteria, true);
+    // const queryResponse = await sqlPackage.fetchData(tableName, searchValue, searchCriteria, true);
+
+    const [postsList] = await sqlPackage.dbQuery.query(`SELECT * FROM ${tableName} WHERE deleted_at IS NULL`);
 
     return res.status(200).json({
       status: 200,
       message: "Fetch Successful",
-      data: queryResponse,
+      data: postsList,
     });
 
     // getPostElementsSchema

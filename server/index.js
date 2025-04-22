@@ -3,6 +3,7 @@ const env = require("./env.js");
 
 // Dependencies
 const path = require("path");
+const cors = require('cors');
 
 const nodeCron = require("node-cron");
 const funcObj = require('./utils/functions.js');
@@ -34,6 +35,15 @@ const port = env?.port || 5001;
 app.use(express.urlencoded({
     extended: false
 }));
+
+const corsOptions = {
+    origin: '*', // Allow all origins (replace with your frontend URL in production)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true // Enable cookies/tokens if needed
+};
+
+app.use(cors(corsOptions));
 
 // Parse application json
 app.use(express.json());

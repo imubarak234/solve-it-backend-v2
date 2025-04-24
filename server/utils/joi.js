@@ -112,7 +112,6 @@ joiObj.createNewsSchema = Joi.object({
         .required(),
     user_id: Joi.number()
         .required(),
-    media: Joi.string(),
     video: Joi.string(),
     tags: Joi.string(),
     code: Joi.string(),

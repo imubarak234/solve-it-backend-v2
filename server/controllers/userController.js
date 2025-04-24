@@ -28,7 +28,20 @@ userControllerClass.createUser = async (req, res) => {
         });
     }
 
-    let { role_id, name, email, phone, dob, gender, school_id, password, department_id, faculty_id, matric_number, level_id } = value;
+    let { 
+      role_id, 
+      name, 
+      email, 
+      phone, 
+      dob, 
+      gender, 
+      school_id, 
+      password, 
+      department_id, 
+      faculty_id, 
+      matric_number, 
+      level_id 
+    } = value;
 
 
 

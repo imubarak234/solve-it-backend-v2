@@ -27,7 +27,7 @@ postControllerClass.createPost = async (req, res) => {
         });
     }
 
-    let { school_id, news_category_id, title, excerpt, body, media, video, tags, faculties, departments, code, user_id } = value;
+    let { school_id, news_category_id, title, excerpt, body, video, tags, faculties, departments, code, user_id } = value;
 
     code = Boolean(code) ? code : Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
@@ -40,14 +40,14 @@ postControllerClass.createPost = async (req, res) => {
         });
     }
 
-
+    const imagePath = req?.file?.path || "";
     const newPost = {
       school_id,
       news_category_id,
       title,
       excerpt,
       body,
-      media,
+      media: imagePath,
       video,
       tags,
       faculties,
@@ -347,6 +347,108 @@ postControllerClass.getPostElements = async (req, res) => {
     })
   }
 };
+
+postControllerClass.getCommentsReplies = async (req, res) => {
+  try {
+
+    const filters = Object.entries(req.query).reduce((acc, [key, value]) => {
+      if (value !== '' && value !== null && value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    let query = 'SELECT * FROM news_comment_replies';
+    const values = [];
+    const conditions = [];
+
+    Object.entries(filters).forEach(([key, value], index) => {
+      conditions.push(`${key} = ?`);
+      values.push(value);
+    });
+
+    if (conditions.length) {
+      query += ` WHERE ${conditions.join(' AND ')}`;
+    }
+
+    if(query.includes("AND")){
+      query += ' AND deleted_at IS NULL';
+    }
+    else if(query.includes("WHERE")){
+      query += ' AND deleted_at IS NULL';
+    }
+    else {
+      query += ' WHERE deleted_at IS NULL';
+    }
+
+    const [news_comments] = await sqlPackage.dbQuery.query(query, values);
+        
+    return res.status(200).json({
+      status: 200,
+      message: "Post Comments Replies retrieved successfully",
+      data: news_comments,
+      count: news_comments?.length
+    })
+  }
+  catch(err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
+
+postControllerClass.getComments = async (req, res) => {
+
+  try {
+
+    const filters = Object.entries(req.query).reduce((acc, [key, value]) => {
+      if (value !== '' && value !== null && value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+
+    let query = 'SELECT * FROM news_comments';
+    const values = [];
+    const conditions = [];
+
+    Object.entries(filters).forEach(([key, value], index) => {
+      conditions.push(`${key} = ?`);
+      values.push(value);
+    });
+
+    if (conditions.length) {
+      query += ` WHERE ${conditions.join(' AND ')}`;
+    }
+
+    if(query.includes("AND")){
+      query += ' AND deleted_at IS NULL';
+    }
+    else if(query.includes("WHERE")){
+      query += ' AND deleted_at IS NULL';
+    }
+    else {
+      query += ' WHERE deleted_at IS NULL';
+    }
+
+    const [news_comments] = await sqlPackage.dbQuery.query(query, values);
+        
+    return res.status(200).json({
+      status: 200,
+      message: "Post Comments retrieved successfully",
+      data: news_comments,
+      count: news_comments?.length
+    })
+  }
+  catch(err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
 
 postControllerClass.deletePostElement = async (req, res) => {
 

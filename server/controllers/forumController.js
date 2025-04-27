@@ -84,7 +84,7 @@ forumsControllerClass.updateForum = async (req, res) => {
     }
 
 
-    await sqlPackage.dbQuery.query(`UPDATE forums SET title = '${title}', description = '${description}', photo = '${photo}', price = '${price}', comment = '${comment}', updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
+    await sqlPackage.dbQuery.query(`UPDATE forums SET title = '${title}', description = '${description}', photo = '${photo}', comment = '${comment}', updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
         
     return res.status(200).json({
         status: 200,
@@ -102,6 +102,8 @@ forumsControllerClass.updateForum = async (req, res) => {
 forumsControllerClass.getForums = async (req, res) => {
 
   try {
+
+
     const filters = Object.entries(req.query).reduce((acc, [key, value]) => {
     if (value !== '' && value !== null && value !== undefined) {
       acc[key] = value;
@@ -248,7 +250,7 @@ forumsControllerClass.getForumCategories = async (req, res) => {
   }
 }
 
-forumsControllerClass.  createForumJoinRequest = async (req, res) => {
+forumsControllerClass.createForumJoinRequest = async (req, res) => {
 
   try {
 
@@ -313,7 +315,7 @@ forumsControllerClass.updateForumJoinRequest = async (req, res) => {
     }
 
     if(status == "Accepted"){
-      await sqlPackage.dbQuery.query(`UPDATE forum_join_requests SET accepted = TRUE, accepted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
+      await sqlPackage.dbQuery.query(`UPDATE forum_join_requests SET accepted = TRUE, accepted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}', updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' where id = ${id}`);
 
       code = Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
 
@@ -329,7 +331,7 @@ forumsControllerClass.updateForumJoinRequest = async (req, res) => {
       await sqlPackage.insertData(forumUserEntry, "user_forums");
     }
     else {
-      await sqlPackage.dbQuery.query(`UPDATE forum_join_requests SET accepted = FALSE, accepted_at = NULL deleted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
+      await sqlPackage.dbQuery.query(`UPDATE forum_join_requests SET accepted = FALSE, accepted_at = NULL, deleted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' where id = ${id}`);
   }
 
     res.status(200).json({
@@ -410,7 +412,7 @@ forumsControllerClass.leaveForum = async (req, res) => {
         });
     }
 
-    let { id, user_id, forum_id, status } = value;
+    let { id, status } = value;
 
     const forumJoinRequestData = await funcObj.getUserData("id", id, "user_forums");
 
@@ -422,10 +424,11 @@ forumsControllerClass.leaveForum = async (req, res) => {
     }
 
     if(status == "Kicked Out") {
-      await sqlPackage.dbQuery.query(`UPDATE user_forums SET kicked_out = TRUE, kicked_out_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
+      await sqlPackage.dbQuery.query(`UPDATE user_forums SET kicked = TRUE, kicked_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}', updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' where id = ${id}`);
     }
     else if(status == "Left") {
-      await sqlPackage.dbQuery.query(`UPDATE user_forums SET left = TRUE, left_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
+      // console.log("Working")
+      await sqlPackage.dbQuery.query(`UPDATE user_forums SET left_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}', deleted_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}' where id = ${id}`);
     }
     else {
       return res.status(409).json({

@@ -75,10 +75,6 @@ forumSchemaClass.updateForumJoinRequestSchema = Joi.object({
 forumSchemaClass.leaveForumSchema = Joi.object({
   id: Joi.number()
     .required(),
-  user_id: Joi.number()
-    .required(),
-  forum_id: Joi.number()
-    .required(),
   status: Joi.string()
     .valid("Kicked Out", "Left")
     .required()
@@ -86,4 +82,6 @@ forumSchemaClass.leaveForumSchema = Joi.object({
       'any.only': '{{#label}} must be one of "Kicked Out", "Left"',
       'any.required': '{{#label}} is required'
     }),
-})
+});
+
+module.exports = forumSchemaClass;

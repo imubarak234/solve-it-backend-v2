@@ -22,6 +22,7 @@ const adminPostRoutes = require('./routes/admin/adminPostRoutes.js');
 const roleRoutes = require('./routes/admin/roleRoutes.js');
 const marketRoutes = require('./routes/marketPlaceRoutes.js')
 const coreServiceRoutes = require('./routes/coreServicesRoutes.js')
+const forumRoutes = require('./routes/forumRoutes.js')
 
 const auth = require('./middlewares/jwt.js');
 const rateLimit = require('express-rate-limit');
@@ -79,6 +80,7 @@ app.use('/api/v1/admin/post', adminPostRoutes);
 app.use('/api/v1/admin/roles', roleRoutes);
 app.use('/api/v1/market-place', marketRoutes);
 app.use('/api/v1/core-services', coreServiceRoutes);
+app.use('/api/v1/forum', forumRoutes);
 
 
 

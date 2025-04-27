@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/createForum', apiLimiter, forumController.createForum);
 router.put('/updateForum', apiLimiter, forumController.updateForum);
-router.get('getForum', apiLimiter, forumController.getForums);
+router.get('/getForums', apiLimiter, forumController.getForums);
 router.post('/createForumCategory', apiLimiter, forumController.createForumCategory);
 router.put('/updateForumCategory', apiLimiter, forumController.updateForumCategory);
 router.get('/getForumCategories', apiLimiter, forumController.getForumCategories);

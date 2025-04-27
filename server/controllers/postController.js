@@ -359,7 +359,7 @@ postControllerClass.getCommentsReplies = async (req, res) => {
     }, {});
 
     let query = 'SELECT * FROM news_comment_replies';
-    const values = [];
+    const values = [];      
     const conditions = [];
 
     Object.entries(filters).forEach(([key, value], index) => {

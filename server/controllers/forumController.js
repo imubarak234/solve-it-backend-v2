@@ -248,7 +248,7 @@ forumsControllerClass.getForumCategories = async (req, res) => {
   }
 }
 
-forumsControllerClass.createForumJoinRequest = async (req, res) => {
+forumsControllerClass.  createForumJoinRequest = async (req, res) => {
 
   try {
 

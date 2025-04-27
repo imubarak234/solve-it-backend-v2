@@ -11,5 +11,7 @@ router.post('/createPermission', apiLimiter, roleController.createPermission);
 router.post('/updatePermission', apiLimiter, roleController.updatePermission);
 router.get('/getRoles', apiLimiter, roleController.getRoles);
 router.get('/getPermissions', apiLimiter, roleController.getPermissions);
+router.get('/getRolePermissions/:id', apiLimiter, roleController.getRolePermissions);
+router.post('/mapRolePermissions', apiLimiter, roleController.mapRolePermission);
 
 module.exports = router;

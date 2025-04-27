@@ -49,6 +49,8 @@ authControllerClass.loginEmail = async (req, res) => {
 
         const authToken = auth.generateToken({ user_id: userExist.id });
 
+        const [ roleData ] = await sqlPackage.dbQuery.query(`SELECT * FROM roles_permissions WHERE id = ${id}`);
+
         // let payload = JSON.stringify({})
 
         return res.status(200).json({
@@ -70,6 +72,7 @@ authControllerClass.loginEmail = async (req, res) => {
                 department_id: userExist.department_id,
                 level_id: userExist.level_id,
                 user_category: userExist.user_category,
+                privileges: roleData,
             }
         })
 
@@ -117,6 +120,8 @@ authControllerClass.loginPhone = async (req, res) => {
 
     // The token is generated
     const authToken = auth.generateToken({ user_id: userExist.user_id });
+
+    const [ roleData ] = await sqlPackage.dbQuery.query(`SELECT * FROM roles_permissions WHERE id = ${id}`);
     
     // let payload = JSON.stringify({})
 
@@ -139,6 +144,7 @@ authControllerClass.loginPhone = async (req, res) => {
           department_id: userExist.department_id,
           level_id: userExist.level_id,
           user_category: userExist.user_category,
+          privileges: roleData,
         }
     })
   }

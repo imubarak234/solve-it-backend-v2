@@ -4,6 +4,10 @@ const env = require("./env.js");
 // Dependencies
 const path = require("path");
 const cors = require('cors');
+const socketIo = require('socket.io');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
 const nodeCron = require("node-cron");
 const funcObj = require('./utils/functions.js');
@@ -82,13 +86,33 @@ app.use('/api/v1/market-place', marketRoutes);
 app.use('/api/v1/core-services', coreServiceRoutes);
 app.use('/api/v1/forum', forumRoutes);
 
+// Instantiate the HTTPS server
+const credentials = {
+    'key' : fs.readFileSync(path.join(__dirname, '/../https/key.pem')),
+    'cert' : fs.readFileSync(path.join(path.join(__dirname, '/../https/-cert.pem'))),
+  };
+
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+// 3. Attach Socket.io to the same server
+const io = socketIo(httpServer, {
+    cors: {
+      origin: "*", // Match your Express CORS config
+      methods: ["GET", "POST"]
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('New connection:', socket.id);
+    
+    socket.on('chat-message', (data) => {
+      // Handle chat messages
+      io.emit('new-message', data);
+    });
+  });
 
 
-
-
-
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Server up and running on port: ${port}.`)
-
-    // nodeCron.schedule("59 * * * * *", updateRecords);
 });

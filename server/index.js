@@ -30,6 +30,8 @@ const forumRoutes = require('./routes/forumRoutes.js')
 
 const auth = require('./middlewares/jwt.js');
 const rateLimit = require('express-rate-limit');
+const chatController  = require('./controllers/chatController.js');
+const forumController = require('./controllers/forumController.js')
 
 
 // Initialize express
@@ -106,10 +108,37 @@ const io = socketIo(httpServer, {
 io.on('connection', (socket) => {
     console.log('New connection:', socket.id);
     
-    socket.on('chat-message', (data) => {
+    socket.on('chat-message', async (data) => {
       // Handle chat messages
-      io.emit('new-message', data);
+
+      chatController.createChat(data.school_id, data.sender_id, data.receiver_id, data.message)
+      .then((res) => {
+        if (res.status == 200) {
+          socket.broadcast.to(data.receiver_id).emit('receive-message', data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error creating chat:', err);
+      });
     });
+
+
+    socket.on('disconnect', () => {
+      console.log('User disconnected:', socket.id);
+    });
+
+    socket.on('form-message', (data) => {
+
+      forumController.createForumMessage(data.school_id, data.forum_id, data.user_id, data.message)
+      .then((res) => {
+        if (res.status == 200) {
+          socket.broadcast.to(data.forum_id).emit('receive-forum-message', data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error creating forum chat:', err);
+      });
+    })
   });
 
 

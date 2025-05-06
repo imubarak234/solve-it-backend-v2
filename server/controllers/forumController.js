@@ -451,5 +451,56 @@ forumsControllerClass.leaveForum = async (req, res) => {
   }
 }
 
+forumsControllerClass.createForumMessage = async (data) => {
+
+  const { school_id, forum_id, user_id, message } = data;
+  
+    const code = crypto.randomUUID();
+    const created_at = dayjs().tz("Africa/Lagos").format("YYYY-MM-DD HH:mm:ss");
+
+    const sql = `INSERT INTO forum_messages (school_id, forum_id, user_id, code, created_at, body) VALUES (?, ?, ?, ?, ?, ?)`;
+    const values = [school_id, forum_id, user_id, code, created_at, message];
+    const result = await sqlPackage.dbQuery.query(sql, values);
+
+    if (result[0].affectedRows > 0) {
+      return {
+        status: 200,
+        message: "Forum message created successfully",
+        data: {
+          created_at,
+          school_id,
+        }
+      };
+    } else {
+      return {
+        status: 500,
+        message: "Failed to create forum chat"
+      };
+    }
+}
+
+forumsControllerClass.getMessagesByForumId = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+      
+    const forumMessages = await funcObj.getUserData("forum_id", id, "forum_messages");
+
+    return res.status(200).json({
+      status: 200,
+      message: "Forum messages retrieved successfully",
+      data: forumMessages,
+    });
+
+  }
+  catch(err) {
+    return res.status(500).json({
+      status: 500,
+      message: String(err)
+    });
+  }
+}
+
 
 module.exports = forumsControllerClass;

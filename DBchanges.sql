@@ -238,4 +238,9 @@ ALTER TABLE core_service_payments ADD COLUMN status varchar(30) CHARACTER SET ut
 
 
 
+-- Chat Message Table Changes
+
+ALTER TABLE chat_messages ADD COLUMN receiver_id BIGINT UNSIGNED NOT NULL;
+
+
 

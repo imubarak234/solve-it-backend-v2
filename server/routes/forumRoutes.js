@@ -14,6 +14,7 @@ router.post('/createForumJoinRequest', apiLimiter, forumController.createForumJo
 router.put('/updateForumJoinRequest', apiLimiter, forumController.updateForumJoinRequest);
 router.get('/getForumJoinRequests', apiLimiter, forumController.getForumJoinRequests);
 router.put('/leaveForum', apiLimiter, forumController.leaveForum);
+router.get('/getForumMessagesById/:id', apiLimiter, forumController.getMessagesByForumId);
 
 
 module.exports = router;

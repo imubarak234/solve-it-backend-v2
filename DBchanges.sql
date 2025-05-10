@@ -243,4 +243,25 @@ ALTER TABLE core_service_payments ADD COLUMN status varchar(30) CHARACTER SET ut
 ALTER TABLE chat_messages ADD COLUMN receiver_id BIGINT UNSIGNED NOT NULL;
 
 
+-- New Table Wallets housing the wallets information of the users
+
+CREATE TABLE `wallets` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `school_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `wallets_user_id_unique` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE wallets ADD CONSTRAINT fk_wallets_users FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE wallets ADD CONSTRAINT fk_wallets_schools FOREIGN KEY (school_id) REFERENCES schools(id);
+
+ALTER TABLE wallets ADD COLUMN bank_account_id BIGINT UNSIGNED NULL;
+ALTER TABLE wallets ADD CONSTRAINT fk_wallets_bank_account FOREIGN KEY (bank_account_id) REFERENCES bank_accounts(id);
+
+-- Changes to the bank account table
+ALTER TABLE bank_accounts ADD COLUMN user_id BIGINT UNSIGNED NULL;
+ALTER TABLE bank_accounts ADD CONSTRAINT fk_bank_accounts_users FOREIGN KEY (user_id) REFERENCES users(id);
 

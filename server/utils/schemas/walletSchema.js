@@ -46,6 +46,8 @@ walletSchemaClass.updateWalletSchema = Joi.object({
       'any.required': '{{#label}} is required'
     })
     .required(),
+  school_id: Joi.number()
+    .required(),
 })
 
 module.exports = walletSchemaClass;

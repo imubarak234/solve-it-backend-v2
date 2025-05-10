@@ -105,44 +105,45 @@ forumsControllerClass.getForums = async (req, res) => {
 
 
     const filters = Object.entries(req.query).reduce((acc, [key, value]) => {
-    if (value !== '' && value !== null && value !== undefined) {
-      acc[key] = value;
+      if (value !== '' && value !== null && value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+
+    let query = 'SELECT * FROM forums';
+    const values = [];
+    const conditions = [];
+
+    Object.entries(filters).forEach(([key, value], index) => {
+      conditions.push(`${key} = ?`);
+      values.push(value);
+    });
+
+    if (conditions.length) {
+      query += ` WHERE ${conditions.join(' AND ')}`;
     }
-    return acc;
-  }, {});
 
+    if(query.includes("AND")){
+      query += ' AND deleted_at IS NULL';
+    }
+    else if(query.includes("WHERE")){
+      query += ' AND deleted_at IS NULL';
+    }
+    else {
+      query += ' WHERE deleted_at IS NULL';
+    }
 
-  let query = 'SELECT * FROM forums';
-  const values = [];
-  const conditions = [];
+    const [forums] = await sqlPackage.dbQuery.query(query, values);
+        
+    return res.status(200).json({
+      status: 200,
+      message: "Forums retrieved successfully",
+      data: forums,
+      count: forums?.length
+    })
 
-  Object.entries(filters).forEach(([key, value], index) => {
-    conditions.push(`${key} = ?`);
-    values.push(value);
-  });
-
-  if (conditions.length) {
-    query += ` WHERE ${conditions.join(' AND ')}`;
-  }
-
-  if(query.includes("AND")){
-    query += ' AND deleted_at IS NULL';
-  }
-  else if(query.includes("WHERE")){
-    query += ' AND deleted_at IS NULL';
-  }
-  else {
-    query += ' WHERE deleted_at IS NULL';
-  }
-
-  const [forums] = await sqlPackage.dbQuery.query(query, values);
-      
-  return res.status(200).json({
-    status: 200,
-    message: "Forums retrieved successfully",
-    data: forums,
-    count: forums?.length
-  })
   }
   catch(err) {
     return res.status(500).json({

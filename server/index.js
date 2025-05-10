@@ -24,14 +24,16 @@ const adminCategoryRoutes = require('./routes/admin/categoriesRoutes.js');
 const schoolRoutes = require('./routes/admin/schoolRoutes.js');
 const adminPostRoutes = require('./routes/admin/adminPostRoutes.js');
 const roleRoutes = require('./routes/admin/roleRoutes.js');
-const marketRoutes = require('./routes/marketPlaceRoutes.js')
-const coreServiceRoutes = require('./routes/coreServicesRoutes.js')
-const forumRoutes = require('./routes/forumRoutes.js')
+const marketRoutes = require('./routes/marketPlaceRoutes.js');
+const coreServiceRoutes = require('./routes/coreServicesRoutes.js');
+const forumRoutes = require('./routes/forumRoutes.js');
+const walletRoutes = require('./routes/walletRoutes.js')
+
 
 const auth = require('./middlewares/jwt.js');
 const rateLimit = require('express-rate-limit');
 const chatController  = require('./controllers/chatController.js');
-const forumController = require('./controllers/forumController.js')
+const forumController = require('./controllers/forumController.js');
 
 
 // Initialize express
@@ -87,6 +89,7 @@ app.use('/api/v1/admin/roles', roleRoutes);
 app.use('/api/v1/market-place', marketRoutes);
 app.use('/api/v1/core-services', coreServiceRoutes);
 app.use('/api/v1/forum', forumRoutes);
+app.use('/api/v1/wallet', walletRoutes);
 
 // Instantiate the HTTPS server
 const credentials = {

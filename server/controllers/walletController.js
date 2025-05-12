@@ -79,7 +79,7 @@ walletControllerClass.updateBankAccount = async (req, res) => {
         });
     }
 
-    await sqlPackage.dbQuery.query(`UPDATE wallets SET bank = '${bank}', number = '${number}', name = '${name}', updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
+    await sqlPackage.dbQuery.query(`UPDATE bank_accounts SET bank = '${bank}', number = '${number}', name = '${name}', updated_at = '${dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss')}'  where id = ${id}`);
             
     return res.status(200).json({
         status: 200,
@@ -184,10 +184,16 @@ const updateWalletBalance = async (userId, amount, transactionType) => {
     await connection.beginTransaction();
 
     // 1. Lock the wallet row for this user
-    const [wallet] = await connection.query(
+    let [wallet] = await connection.query(
       `SELECT * FROM wallets WHERE user_id = ? FOR UPDATE`, 
       [userId]
     );
+
+    if (wallet.length === 0) {
+      throw new Error('Wallet not found');
+    }
+
+    wallet = wallet[0]; // Get the first row
 
     if (!wallet) {
       throw new Error('Wallet not found');
@@ -196,13 +202,12 @@ const updateWalletBalance = async (userId, amount, transactionType) => {
     // 2. Calculate new balance
     let newBalance;
     if (transactionType === 'Credit') {
-      newBalance = wallet.balance + amount;
-
+      newBalance = parseFloat(wallet.balance) + parseFloat(amount);
     } else if (transactionType === 'Debit') {
-      if (wallet.balance < amount) {
+      if (parseFloat(wallet.balance) < parseFloat(amount)) {
         throw new Error('Insufficient funds');
       }
-      newBalance = wallet.balance - amount;
+      newBalance = parseFloat(wallet.balance) - parseFloat(amount);
     }
 
     // 3. Update the wallet
@@ -263,7 +268,7 @@ walletControllerClass.updateWalletBalance = async(req, res) => {
         code,
       };
 
-      await sqlPackage.insertData(transaction, "wallet_transactions");
+      await sqlPackage.insertData(transaction, "user_wallet_transactions");
     }
 
     return res.json({
@@ -305,15 +310,15 @@ walletControllerClass.getWallets = async (req, res) => {
       query += ` WHERE ${conditions.join(' AND ')}`;
     }
 
-    if(query.includes("AND")){
-      query += ' AND deleted_at IS NULL';
-    }
-    else if(query.includes("WHERE")){
-      query += ' AND deleted_at IS NULL';
-    }
-    else {
-      query += ' WHERE deleted_at IS NULL';
-    }
+    // if(query.includes("AND")){
+    //   query += ' AND deleted_at IS NULL';
+    // }
+    // else if(query.includes("WHERE")){
+    //   query += ' AND deleted_at IS NULL';
+    // }
+    // else {
+    //   query += ' WHERE deleted_at IS NULL';
+    // }
 
     const [wallets] = await sqlPackage.dbQuery.query(query, values);
         
@@ -347,14 +352,11 @@ walletControllerClass.createWallet = async (req, res) => {
 
     let { user_id, balance, school_id, bank_account_id } = value;
 
-    code = Math.random().toString(16).slice(-11) + crypto.getRandomValues(new Uint32Array(24))[0];
-
     const newWallet = {
       user_id,
       balance,
       school_id,
       bank_account_id,
-      code,
       created_at: dayjs().tz('Africa/Lagos').format('YYYY-MM-DD HH:mm:ss'),
     };
 

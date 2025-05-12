@@ -255,6 +255,7 @@ CREATE TABLE `wallets` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `wallets_user_id_unique` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 ALTER TABLE wallets ADD CONSTRAINT fk_wallets_users FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE wallets ADD CONSTRAINT fk_wallets_schools FOREIGN KEY (school_id) REFERENCES schools(id);
 
